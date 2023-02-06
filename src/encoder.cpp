@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+namespace h264encoder {
 
 Encoder::~Encoder(){
   std::cout << "Encoder shutdown called.\n";
@@ -75,4 +76,5 @@ int Encoder::encode(unsigned char * img, bool *imgReady){
 	return frame_size;
 }
 
+} // namespace h264encoder
 

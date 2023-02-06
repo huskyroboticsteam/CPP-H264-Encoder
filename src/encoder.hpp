@@ -13,6 +13,7 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
+namespace h264encoder {
 
 class Encoder {
 private:
@@ -36,5 +37,7 @@ public:
 	Encoder(int, int, int, int, float);
 	int encode(unsigned char *, bool*);
 };
+
+} // namespace h264encoder
 
 #endif /* ENCODER_HPP_ */
