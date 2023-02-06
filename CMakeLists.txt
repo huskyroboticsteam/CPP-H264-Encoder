@@ -6,7 +6,7 @@ include(CMakePackageConfigHelpers)
 
 project(H264Encoder
   LANGUAGES C CXX
-  VERSION 1.0.0)
+  VERSION 1.0.1)
 
 add_library(H264Encoder STATIC
   src/encoder.cpp)
