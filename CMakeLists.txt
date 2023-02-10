@@ -6,7 +6,7 @@ include(CMakePackageConfigHelpers)
 
 project(H264Encoder
   LANGUAGES C CXX
-  VERSION 1.1.0)
+  VERSION 1.1.1)
 
 add_library(H264Encoder STATIC
   src/encoder.cpp)
@@ -24,7 +24,7 @@ if (DEFINED PROJECT_NAME)
 	EXPORT h264encoder-targets
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
   # Install the header files to the system
-  install(FILES ${CAN_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/H264Encoder)
+  install(FILES src/encoder.hpp DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/H264Encoder)
 
   # Install the list of targets to the system
   install(EXPORT h264encoder-targets
