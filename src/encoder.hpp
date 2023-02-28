@@ -4,16 +4,7 @@
 
 #include <memory>
 #include <stdint.h>
-
-extern "C" {
-#include <x264.h>
-
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavformat/avio.h>
-#include <libavutil/imgutils.h>
-#include <libswscale/swscale.h>
-}
+#include <vector>
 
 namespace h264encoder {
 
@@ -32,8 +23,7 @@ typedef struct x264_nal_t_simple {
 
 class Encoder {
 public:
-	x264_nal_t_simple* nals;
-	int num_nals;
+	std::vector<x264_nal_t_simple> nals;
 	Encoder(){};
 	Encoder(int, int, int, int, float);
 	int encode(unsigned char*);
