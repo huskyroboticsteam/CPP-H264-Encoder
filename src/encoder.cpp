@@ -1,6 +1,13 @@
 #include "encoder.hpp"
 
 #include <iostream>
+#include <x264.h>
+
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavformat/avio.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
 
 namespace h264encoder {
 
@@ -12,13 +19,14 @@ private:
 	x264_t* enc;
 	x264_param_t prms;
 	x264_picture_t pic_in, pic_out;
+	x264_nal_t* nals; // used everywhere in the code
 
 	struct SwsContext* sws;
 	AVFrame pic_raw; /* used for our "raw" input container */
 	AVPixelFormat cam_pixel_fmt = AV_PIX_FMT_BGR24;
 
 public:
-	x264_nal_t_simple* nals;
+	std::vector<x264_nal_t_simple> nals_simple;
 	int num_nals;
 	virtual ~EncoderImpl() {}
 	EncoderImpl(){};
@@ -42,11 +50,8 @@ public:
 
 		prms.i_csp = X264_CSP_I420;
 		enc = x264_encoder_open(&prms);
-		x264_nal_t convertedNal;
-		convertedNal.i_payload = nals->i_payload;
-		convertedNal.p_payload = nals->p_payload;
-		auto converted_ptr = &convertedNal;
-		x264_encoder_headers(enc, &converted_ptr, &nheader);
+
+		x264_encoder_headers(enc, &nals, &nheader);
 
 		// Initialize X264 Picture
 		x264_picture_alloc(&pic_in, X264_CSP_I420, out_xres, out_yres);
@@ -83,12 +88,15 @@ public:
 
 		// Encode
 		pic_in.i_pts = framecounter++;
-		x264_nal_t convertedNal;
-		convertedNal.i_payload = nals->i_payload;
-		convertedNal.p_payload = nals->p_payload;
-		auto converted_ptr = &convertedNal;
-		int frame_size =
-			x264_encoder_encode(enc, &converted_ptr, &num_nals, &pic_in, &pic_out);
+		int frame_size = x264_encoder_encode(enc, &nals, &num_nals, &pic_in, &pic_out);
+
+		nals_simple.clear();
+		for (auto i = 0; i < num_nals; i++) {
+			x264_nal_t_simple nal;
+			nal.i_payload = nals[i].i_payload;
+			nal.p_payload = nals[i].p_payload;
+			nals_simple.push_back(nal);
+		}
 
 		return frame_size;
 	}

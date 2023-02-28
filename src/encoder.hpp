@@ -3,17 +3,8 @@
 #define ENCODER_HPP_
 
 #include <memory>
+#include <vector>
 #include <stdint.h>
-
-extern "C" {
-#include <x264.h>
-
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavformat/avio.h>
-#include <libavutil/imgutils.h>
-#include <libswscale/swscale.h>
-}
 
 namespace h264encoder {
 
@@ -32,7 +23,7 @@ typedef struct x264_nal_t_simple {
 
 class Encoder {
 public:
-	x264_nal_t_simple* nals;
+	std::vector<x264_nal_t_simple> nals;
 	int num_nals;
 	Encoder(){};
 	Encoder(int, int, int, int, float);
