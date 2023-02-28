@@ -19,7 +19,7 @@ private:
 	x264_t* enc;
 	x264_param_t prms;
 	x264_picture_t pic_in, pic_out;
-	x264_nal_t* nals; // used everywhere in the code
+	x264_nal_t* nals;
 
 	struct SwsContext* sws;
 	AVFrame pic_raw; /* used for our "raw" input container */
