@@ -1,6 +1,8 @@
 #include "encoder.hpp"
 
 #include <iostream>
+
+extern "C" {
 #include <x264.h>
 
 #include <libavcodec/avcodec.h>
@@ -8,6 +10,7 @@
 #include <libavformat/avio.h>
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
+}
 
 namespace h264encoder {
 

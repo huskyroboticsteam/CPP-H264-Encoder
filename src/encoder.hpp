@@ -3,8 +3,8 @@
 #define ENCODER_HPP_
 
 #include <memory>
-#include <vector>
 #include <stdint.h>
+#include <vector>
 
 namespace h264encoder {
 
